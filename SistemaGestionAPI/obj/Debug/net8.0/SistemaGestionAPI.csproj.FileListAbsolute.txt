@@ -148,3 +148,4 @@ C:\xampp2\htdocs\Proyectsc#\SistemaGestionAPI\SistemaGestionAPI\obj\Debug\net8.0
 C:\xampp2\htdocs\Proyectsc#\SistemaGestionAPI\SistemaGestionAPI\obj\Debug\net8.0\ref\SistemaGestionAPI.dll
 C:\xampp2\htdocs\Proyectsc#\SistemaGestionAPI\SistemaGestionAPI\bin\Debug\net8.0\AutoMapper.dll
 C:\xampp2\htdocs\Proyectsc#\SistemaGestionAPI\SistemaGestionAPI\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\xampp2\htdocs\Proyectsc#\SistemaGestionAPI\SistemaGestionAPI\obj\Debug\net8.0\SistemaGestionAPI.sourcelink.json
