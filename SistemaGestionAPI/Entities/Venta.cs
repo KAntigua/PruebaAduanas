@@ -12,6 +12,8 @@ namespace SistemaGestionAPI.Entities
         [Required]
         public double Total { get; set; }
 
+        public int ClienteId { get; set; }
+        public Cliente Cliente { get; set; }
 
         public ICollection<VentaProducto> VentaProductos { get; set; }
     }

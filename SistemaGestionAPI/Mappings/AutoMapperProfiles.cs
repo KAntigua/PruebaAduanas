@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using SistemaGestionAPI.DTOs;
+using SistemaGestionAPI.Entities;
 using SistemaGestionAPI.SistemaGestion.Entities;
+
+
 
 namespace SistemaGestionAPI.Mappings
 {
@@ -10,6 +13,14 @@ namespace SistemaGestionAPI.Mappings
         
         CreateMap<Producto, ProductoDTO>().ReverseMap();
         CreateMap<ProductoCreacionDTO, Producto>();
+
+
+        CreateMap<Cliente, ClienteDTO>();
+        CreateMap<ClienteCreacionDTO, Cliente>();
+
+            CreateMap<Venta, VentaDTO>();
+            CreateMap<VentaCreacionDTO, Venta>();
+
         }
     }
 }

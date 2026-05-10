@@ -1,43 +1,49 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SistemaGestionAPI.DTOs;
+using SistemaGestionAPI.Interfaces;
 using SistemaGestionAPI.SistemaGestion.Entities;
 
 namespace SistemaGestionAPI.Controllers
 {
-
+    [Authorize]
     [ApiController]
     [Route("api/productos")]
     public class ProductosController : ControllerBase
     {
-        private readonly ApplicationDbContext context;
+        private readonly IProductoService service;
         private readonly IMapper _mapper;
-        public ProductosController(ApplicationDbContext context,
+
+        public ProductosController(
+            IProductoService service,
             IMapper mapper)
         {
-            this.context = context;
+            this.service = service;
             _mapper = mapper;
-
         }
-
 
         [HttpGet]
         public async Task<ActionResult<List<ProductoDTO>>> Get()
         {
-            var entidades = await context.Productos.ToListAsync();
+            var entidades = await service.GetAll();
+
             var dtos = _mapper.Map<List<ProductoDTO>>(entidades);
+
             return dtos;
         }
-
 
         [HttpGet("{id:int}", Name = "obtenerProducto")]
         public async Task<ActionResult<ProductoDTO>> Get(int id)
         {
-            var entidad = await context.Productos.FirstOrDefaultAsync(x => x.Id == id);
+            var entidad = await service.GetById(id);
 
-            if (entidad == null) {
-                return NotFound();
+            if (entidad == null)
+            {
+                return NotFound(new
+                {
+                    mensaje = "Producto no encontrado"
+                });
             }
 
             var dto = _mapper.Map<ProductoDTO>(entidad);
@@ -45,50 +51,63 @@ namespace SistemaGestionAPI.Controllers
             return dto;
         }
 
-
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ProductoCreacionDTO productoCreacionDTO)
+        public async Task<ActionResult> Post(
+            [FromBody] ProductoCreacionDTO productoCreacionDTO)
         {
             var entidad = _mapper.Map<Producto>(productoCreacionDTO);
-            context.Add(entidad);
-            await context.SaveChangesAsync();
+
+            await service.Add(entidad);
 
             var productoDTO = _mapper.Map<ProductoDTO>(entidad);
 
-            return new CreatedAtRouteResult("obtenerProducto", new { id = productoDTO.Id }, productoDTO);
+            return new CreatedAtRouteResult(
+                "obtenerProducto",
+                new { id = productoDTO.Id },
+                productoDTO);
         }
-
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ProductoCreacionDTO productoCreacionDTO)
+        public async Task<ActionResult> Put(
+            int id,
+            [FromBody] ProductoCreacionDTO productoCreacionDTO)
         {
             var entidad = _mapper.Map<Producto>(productoCreacionDTO);
+
             entidad.Id = id;
-            context.Entry(entidad).State = EntityState.Modified;
-            await context.SaveChangesAsync();
 
-            return NoContent();
+            var existe = await service.GetById(id);
 
+            
+            if (existe == null)
+            {
+                return NotFound(new
+                {
+                    mensaje = "Producto no encontrado"
+                });
+            }
+
+            await service.Update(entidad);
+
+            return NotFound();
         }
-
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
+            var existe = await service.GetById(id);
 
-            var existe =  await context.Productos.AnyAsync(x => x.Id == id);
-
-            if(!existe)
+            if (existe == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    mensaje = "Producto no encontrado"
+                });
             }
 
-            context.Remove(new Producto() { Id = id });
-            await context.SaveChangesAsync();
+            await service.Delete(id);
 
             return NoContent();
         }
-
-
     }
 }
