@@ -10,5 +10,7 @@ namespace SistemaGestionAPI.DTOs
         public string ListaProductos { get; set; }
         [Required]
         public double Total { get; set; }
+
+        public int Cantidad { get; set; }
     }
 }

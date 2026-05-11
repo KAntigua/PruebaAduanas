@@ -726,6 +726,10 @@
           "total": {
             "type": "number",
             "format": "double"
+          },
+          "cantidad": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -757,6 +761,10 @@
           "total": {
             "type": "number",
             "format": "double"
+          },
+          "cantidad": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

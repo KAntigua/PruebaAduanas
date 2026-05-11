@@ -100,7 +100,20 @@ namespace SistemaGestionAPI
 
             builder.Services.AddAuthorization();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowVue",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:5173")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
+
             var app = builder.Build();
+
+            app.UseCors("AllowVue");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

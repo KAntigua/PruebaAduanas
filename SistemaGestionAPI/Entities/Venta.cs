@@ -12,6 +12,9 @@ namespace SistemaGestionAPI.Entities
         [Required]
         public double Total { get; set; }
 
+
+        public int Cantidad { get; set; }
+
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
 

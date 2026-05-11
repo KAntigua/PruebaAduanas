@@ -69,8 +69,8 @@ namespace SistemaGestionAPI.Controllers
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(
-            int id,
-            [FromBody] ProductoCreacionDTO productoCreacionDTO)
+    int id,
+    [FromBody] ProductoCreacionDTO productoCreacionDTO)
         {
             var entidad = _mapper.Map<Producto>(productoCreacionDTO);
 
@@ -78,7 +78,6 @@ namespace SistemaGestionAPI.Controllers
 
             var existe = await service.GetById(id);
 
-            
             if (existe == null)
             {
                 return NotFound(new
@@ -89,7 +88,7 @@ namespace SistemaGestionAPI.Controllers
 
             await service.Update(entidad);
 
-            return NotFound();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

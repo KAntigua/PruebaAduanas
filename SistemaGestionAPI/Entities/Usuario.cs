@@ -12,5 +12,7 @@ namespace SistemaGestionAPI.Entities
         [Required]
         public string Password { get; set; }
 
+        public string Rol { get; set; }
+
     }
 }
