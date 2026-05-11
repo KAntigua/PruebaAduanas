@@ -26,15 +26,31 @@ namespace SistemaGestionAPI.Controllers
 
         [HttpPost("registro")]
         public async Task<ActionResult> Registro(
-            UsuarioCreacionDTO dto)
+    UsuarioCreacionDTO dto)
         {
+           
+
             var usuario = new Usuario
             {
                 Username = dto.Username,
-                Password = dto.Password
+                Password = dto.Password,
+                Rol = "Cliente"
             };
 
-            context.Add(usuario);
+            context.Usuarios.Add(usuario);
+
+           
+
+            var cliente = new Cliente
+            {
+                Name = dto.Username,
+                Correo = "",
+                Numero = ""
+            };
+
+            context.Clientes.Add(cliente);
+
+            // GUARDAR TODO
 
             await context.SaveChangesAsync();
 
@@ -55,9 +71,14 @@ namespace SistemaGestionAPI.Controllers
             }
 
             var claims = new List<Claim>
-            {
-                new Claim("username", usuario.Username)
-            };
+{
+        new Claim("username", usuario.Username),
+
+    new Claim(
+        ClaimTypes.Role,
+        usuario.Rol
+    )
+};
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration["jwt:key"]));
@@ -76,7 +97,9 @@ namespace SistemaGestionAPI.Controllers
             return Ok(new
             {
                 token = new JwtSecurityTokenHandler()
-                    .WriteToken(token)
+        .WriteToken(token),
+
+                rol = usuario.Rol
             });
         }
     }
